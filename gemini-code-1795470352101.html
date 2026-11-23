@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CoRe" />
+  <meta name="theme-color" content="#090d16" />
+  <title>CoRe — Suelo Pélvico y Función Eréctil</title>
+  <style>
+    :root {
+      --bg: #090d16;
+      --surface: #111827;
+      --surface-2: #192234;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f3f6fb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.14);
+      --contract: #f59e0b;
+      --contract-soft: rgba(245, 158, 11, 0.16);
+      --relax: #10b981;
+      --relax-soft: rgba(16, 185, 129, 0.16);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      min-height: 100%;
+      overscroll-behavior-y: none;
+    }
+
+    .app {
+      max-width: 520px;
+      margin: 0 auto;
+      min-height: 100dvh;
+      padding-top: calc(14px + var(--safe-top));
+      padding-bottom: calc(84px + var(--safe-bottom));
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #0284c7, #10b981);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 15px;
+      color: #fff;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.28);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 19px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .streak-pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .streak-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--relax);
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .routine-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      margin-bottom: 14px;
+      scrollbar-width: none;
+    }
+
+    .routine-pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    .pill-btn {
+      flex: 0 0 auto;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      padding: 9px 14px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .pill-btn.active {
+      background: var(--accent-soft);
+      border-color: rgba(56, 189, 248, 0.45);
+      color: var(--accent);
+    }
+
+    .trainer-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      background: rgba(148, 163, 184, 0.14);
+      color: var(--muted);
+    }
+
+    .phase-badge.contract {
+      background: var(--contract-soft);
+      color: var(--contract);
+    }
+
+    .phase-badge.relax {
+      background: var(--relax-soft);
+      color: var(--relax);
+    }
+
+    .visual-box {
+      width: 100%;
+      max-width: 320px;
+      height: 170px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .pelvic-muscle {
+      transition: transform 0.35s ease, fill 0.35s ease;
+      transform-origin: center;
+    }
+
+    .pelvic-muscle.contracted {
+      transform: translateY(-6px) scaleY(1.18);
+      fill: #f59e0b;
+    }
+
+    .pelvic-muscle.relaxed {
+      transform: translateY(2px) scaleY(0.92);
+      fill: #10b981;
+    }
+
+    .timer-num {
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .cue-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0 0 6px;
+      min-height: 22px;
+    }
+
+    .rep-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .controls-row {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .btn-primary {
+      flex: 1;
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color: #fff;
+      border: none;
+      border-radius: 14px;
+      padding: 13px 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .steps-list {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .steps-list li {
+      margin-bottom: 6px;
+    }
+
+    .steps-list strong {
+      color: var(--text);
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin: 0 0 8px;
+    }
+
+    .muted-p {
+      margin: 0 0 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .timeline-item {
+      border-left: 2px solid rgba(56, 189, 248, 0.35);
+      padding-left: 12px;
+      margin-bottom: 12px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-tag {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .timeline-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.45;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .stat-box {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .stat-lbl {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(17, 24, 39, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-top: 1px solid var(--border);
+      padding-bottom: var(--safe-bottom);
+      z-index: 20;
+    }
+
+    .bottom-nav-inner {
+      max-width: 520px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      padding: 11px 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .nav-btn.active {
+      color: var(--accent);
+    }
+
+    .toast {
+      position: fixed;
+      top: calc(16px + var(--safe-top));
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: #0f172a;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: var(--text);
+      padding: 10px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 50;
+      transition: transform 0.28s ease;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div id="toast" class="toast">Sesión completada y guardada</div>
+
+  <div class="app">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">CR</div>
+        <div>
+          <h1>CoRe</h1>
+          <p>Suelo pélvico y función eréctil</p>
+        </div>
+      </div>
+      <div class="streak-pill">
+        <span class="streak-dot"></span>
+        <span id="streakLabel">0 días</span>
+      </div>
+    </header>
+
+    <section id="view-train" class="tab-view active">
+      <div class="routine-pills" id="routinePills"></div>
+
+      <div class="card trainer-stage">
+        <div id="phaseBadge" class="phase-badge">Listo para iniciar</div>
+
+        <div class="visual-box">
+          <svg width="260" height="145" viewBox="0 0 260 145" aria-label="Guía anatómica del suelo pélvico">
+            <path d="M55 32 Q130 20 205 32 L190 112 Q130 128 70 112 Z" fill="none" stroke="rgba(148,163,184,0.35)" stroke-width="2" />
+            <ellipse cx="130" cy="56" rx="34" ry="18" fill="rgba(56,189,248,0.14)" stroke="rgba(56,189,248,0.45)" stroke-width="1.5" />
+            <path id="pelvicMuscle" class="pelvic-muscle" d="M76 92 Q130 78 184 92 Q130 108 76 92 Z" fill="#38bdf8" />
+            <text x="130" y="133" text-anchor="middle" fill="#94a3b8" font-size="11">Suelo pélvico (elevación interna)</text>
+          </svg>
+        </div>
+
+        <div id="timerDisplay" class="timer-num">05</div>
+        <p id="cueDisplay" class="cue-text">Presiona Iniciar para comenzar la guía</p>
+        <div id="repDisplay" class="rep-meta">Repetición 1 de 8</div>
+
+        <div class="controls-row">
+          <button id="btnStartPause" class="btn-primary">Iniciar</button>
+          <button id="btnSound" class="btn-secondary" title="Sonido guía">🔊 On</button>
+          <button id="btnReset" class="btn-secondary">Reiniciar</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">Cómo ejecutarlo correctamente</h2>
+        <ol class="steps-list">
+          <li><strong>Identifica el músculo:</strong> es el mismo que usas para detener el flujo de orina o evitar escapar gases, tirando hacia arriba y adentro.</li>
+          <li><strong>No aprietes glúteos ni abdomen:</strong> mantén los glúteos, muslos y abdomen relajados; si los tensas, pierdes precisión.</li>
+          <li><strong>Respira con normalidad:</strong> inhala y exhala sin aguantar la respiración ni empujar hacia abajo.</li>
+          <li><strong>Respeta el descanso:</strong> soltar por completo entre repeticiones evita fatiga y contractura pélvica.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="view-science" class="tab-view">
+      <div class="card">
+        <h2 class="section-title">Evidencia científica</h2>
+        <p class="muted-p">
+          <strong>Dorey et al. (2005, <em>BJU International</em>):</strong> en un ensayo clínico con hombres con disfunción eréctil, el entrenamiento estructurado de los músculos del suelo pélvico junto con cambios en el estilo de vida logró que el <strong>40% recuperara una función eréctil normal</strong> y otro <strong>35.5% mejorara significativamente</strong> tras 3 meses.
+        </p>
+        <p class="muted-p">
+          <strong>Mecanismo:</strong> los músculos <em>isquiocavernoso</em> y <em>bulbocavernoso</em> ayudan a comprimir la base del pene y a limitar el retorno venoso durante la erección, favoreciendo mayor firmeza y sostén.
+        </p>
+      </div>
+
+      <div class="card">
+        <h2 class="section-title">¿En cuántos días se ven beneficios?</h2>
+        <div class="timeline-item">
+          <div class="timeline-tag">Días 1 a 14 · Control neuromuscular</div>
+          <div class="timeline-desc">Aprendes a aislar el músculo sin tensar glúteos o abdomen. Mejora el control voluntario inicial.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-tag">Días 21 a 42 (Semanas 3–6) · Primeros cambios</div>
+          <div class="timeline-desc">Suelen notarse erecciones matutinas más consistentes, mejor respuesta inicial y mayor control.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-tag">Días 60 a 90 (Semanas 8–12) · Consolidación</div>
+          <div class="timeline-desc">Mayor resistencia muscular pélvica y firmeza sostenida, en línea con los protocolos clínicos de 12 semanas.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-progress" class="tab-view">
+      <div class="card">
+        <h2 class="section-title">Tu constancia</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div id="statStreak" class="stat-val">0</div>
+            <div class="stat-lbl">Días racha</div>
+          </div>
+          <div class="stat-box">
+            <div id="statSessions" class="stat-val">0</div>
+            <div class="stat-lbl">Sesiones</div>
+          </div>
+          <div class="stat-box">
+            <div id="statMinutes" class="stat-val">0</div>
+            <div class="stat-lbl">Minutos</div>
+          </div>
+        </div>
+        <p class="muted-p">
+          Cada sesión completada se guarda en este dispositivo (<code>localStorage</code>) para que puedas llevar tu registro sin necesidad de cuenta.
+        </p>
+        <button id="btnLogManual" class="btn-primary" style="width:100%;">Marcar sesión de hoy como completada</button>
+      </div>
+    </section>
+  </div>
+
+  <nav class="bottom-nav">
+    <div class="bottom-nav-inner">
+      <button class="nav-btn active" data-tab="view-train">
+        <span>🏋️</span>
+        <span>Rutina</span>
+      </button>
+      <button class="nav-btn" data-tab="view-science">
+        <span>🔬</span>
+        <span>Estudio</span>
+      </button>
+      <button class="nav-btn" data-tab="view-progress">
+        <span>📈</span>
+        <span>Progreso</span>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    const ROUTINES = [
+      {
+        id: 'slow',
+        name: 'Fuerza lenta',
+        contractSec: 5,
+        relaxSec: 5,
+        reps: 8,
+        contractCue: 'Eleva y sostén suave hacia adentro (sin apretar glúteos)',
+        relaxCue: 'Suelta y relaja por completo el suelo pélvico'
+      },
+      {
+        id: 'quick',
+        name: 'Rápidos (Flujo)',
+        contractSec: 1,
+        relaxSec: 2,
+        reps: 12,
+        contractCue: 'Contracción firme y rápida hacia arriba',
+        relaxCue: 'Relaja por completo'
+      },
+      {
+        id: 'reverse',
+        name: 'Kegel inverso',
+        contractSec: 4,
+        relaxSec: 4,
+        reps: 8,
+        contractCue: 'Expande y relaja suavemente la zona pélvica hacia abajo',
+        relaxCue: 'Respira libre y mantén sin tensión'
+      }
+    ];
+
+    const STORAGE_KEY = 'core_pelvic_stats_v1';
+    let stats = loadStats();
+    let routineIndex = 0;
+    let rep = 1;
+    let phase = 'contract';
+    let secondsLeft = ROUTINES[0].contractSec;
+    let timerId = null;
+    let soundEnabled = true;
+    let audioCtx = null;
+
+    const pillsEl = document.getElementById('routinePills');
+    const phaseBadgeEl = document.getElementById('phaseBadge');
+    const timerDisplayEl = document.getElementById('timerDisplay');
+    const cueDisplayEl = document.getElementById('cueDisplay');
+    const repDisplayEl = document.getElementById('repDisplay');
+    const pelvicMuscleEl = document.getElementById('pelvicMuscle');
+    const btnStartPause = document.getElementById('btnStartPause');
+    const btnSound = document.getElementById('btnSound');
+    const btnReset = document.getElementById('btnReset');
+    const btnLogManual = document.getElementById('btnLogManual');
+    const toastEl = document.getElementById('toast');
+
+    function loadStats() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return { streak: 0, sessions: 0, minutes: 0, lastDate: null };
+    }
+
+    function saveStats() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(stats));
+      } catch (e) {}
+      renderStats();
+    }
+
+    function todayStr() {
+      const d = new Date();
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function yesterdayStr() {
+      const d = new Date(Date.now() - 86400000);
+      return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    }
+
+    function recordSession(estMinutes = 2) {
+      const today = todayStr();
+      if (stats.lastDate !== today) {
+        stats.streak = (stats.lastDate === yesterdayStr()) ? stats.streak + 1 : 1;
+        stats.lastDate = today;
+      }
+      stats.sessions += 1;
+      stats.minutes += estMinutes;
+      saveStats();
+      showToast('¡Sesión registrada! Sigue así.');
+    }
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      setTimeout(() => toastEl.classList.remove('show'), 2600);
+    }
+
+    function renderStats() {
+      document.getElementById('streakLabel').textContent = `${stats.streak} ${stats.streak === 1 ? 'día' : 'días'}`;
+      document.getElementById('statStreak').textContent = stats.streak;
+      document.getElementById('statSessions').textContent = stats.sessions;
+      document.getElementById('statMinutes').textContent = stats.minutes;
+    }
+
+    function playTone(freq = 520, duration = 0.12) {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.value = 0.08;
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
+    }
+
+    function currentRoutine() {
+      return ROUTINES[routineIndex];
+    }
+
+    function renderPills() {
+      pillsEl.innerHTML = '';
+      ROUTINES.forEach((r, idx) => {
+        const b = document.createElement('button');
+        b.className = 'pill-btn' + (idx === routineIndex ? ' active' : '');
+        b.textContent = r.name;
+        b.onclick = () => {
+          pauseTimer();
+          routineIndex = idx;
+          resetState();
+          renderPills();
+        };
+        pillsEl.appendChild(b);
+      });
+    }
+
+    function resetState() {
+      rep = 1;
+      phase = 'contract';
+      secondsLeft = currentRoutine().contractSec;
+      updateUI(false);
+    }
+
+    function updateUI(running = Boolean(timerId)) {
+      const r = currentRoutine();
+      timerDisplayEl.textContent = String(secondsLeft).padStart(2, '0');
+      repDisplayEl.textContent = `Repetición ${rep} de ${r.reps}`;
+      btnStartPause.textContent = running ? 'Pausar' : 'Iniciar';
+
+      pelvicMuscleEl.classList.remove('contracted', 'relaxed');
+      phaseBadgeEl.classList.remove('contract', 'relax');
+
+      if (!running && rep === 1 && phase === 'contract' && secondsLeft === r.contractSec) {
+        phaseBadgeEl.textContent = 'Listo para iniciar';
+        cueDisplayEl.textContent = r.contractCue;
+        return;
+      }
+
+      if (phase === 'contract') {
+        phaseBadgeEl.textContent = r.id === 'reverse' ? 'Expandir / Soltar' : 'Contraer';
+        phaseBadgeEl.classList.add('contract');
+        pelvicMuscleEl.classList.add('contracted');
+        cueDisplayEl.textContent = r.contractCue;
+      } else {
+        phaseBadgeEl.textContent = 'Relajar';
+        phaseBadgeEl.classList.add('relax');
+        pelvicMuscleEl.classList.add('relaxed');
+        cueDisplayEl.textContent = r.relaxCue;
+      }
+    }
+
+    function tick() {
+      const r = currentRoutine();
+      if (secondsLeft > 1) {
+        secondsLeft -= 1;
+        updateUI(true);
+        return;
+      }
+
+      if (phase === 'contract') {
+        phase = 'relax';
+        secondsLeft = r.relaxSec;
+        playTone(390, 0.14);
+        updateUI(true);
+      } else {
+        if (rep < r.reps) {
+          rep += 1;
+          phase = 'contract';
+          secondsLeft = r.contractSec;
+          playTone(620, 0.14);
+          updateUI(true);
+        } else {
+          pauseTimer();
+          playTone(780, 0.22);
+          const totalSec = r.reps * (r.contractSec + r.relaxSec);
+          recordSession(Math.max(1, Math.round(totalSec / 60)));
+          resetState();
+          cueDisplayEl.textContent = '¡Rutina completada! Excelente trabajo.';
+        }
+      }
+    }
+
+    function startTimer() {
+      if (timerId) return;
+      playTone(620, 0.12);
+      updateUI(true);
+      timerId = setInterval(tick, 1000);
+    }
+
+    function pauseTimer() {
+      if (timerId) {
+        clearInterval(timerId);
+        timerId = null;
+      }
+      updateUI(false);
+    }
+
+    btnStartPause.addEventListener('click', () => {
+      if (timerId) pauseTimer();
+      else startTimer();
+    });
+
+    btnReset.addEventListener('click', () => {
+      pauseTimer();
+      resetState();
+    });
+
+    btnSound.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      btnSound.textContent = soundEnabled ? '🔊 On' : '🔇 Off';
+    });
+
+    btnLogManual.addEventListener('click', () => recordSession(2));
+
+    document.querySelectorAll('.nav-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-view').forEach(v => v.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    renderPills();
+    resetState();
+    renderStats();
+  </script>
+</body>
+</html>
