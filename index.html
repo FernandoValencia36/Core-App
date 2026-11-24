@@ -194,6 +194,7 @@
       justify-content: space-between;
       gap: 8px;
       margin-bottom: 12px;
+      flex-wrap: wrap;
     }
 
     .phase-badge {
@@ -220,6 +221,16 @@
       color: var(--relax);
     }
 
+    .phase-badge.neutral-phase {
+      background: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .phase-badge.rest {
+      background: var(--posture-soft);
+      color: #d8b4fe;
+    }
+
     .rep-pill {
       background: var(--surface-2);
       border: 1px solid var(--border);
@@ -230,14 +241,60 @@
       color: var(--text);
     }
 
+    /* Barra de progreso de la serie actual o del descanso */
+    .routine-progress-wrap {
+      margin-bottom: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      padding: 9px 12px;
+    }
+
+    .routine-progress-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .routine-progress-header span:last-child {
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 8px;
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.12);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #0284c7, #38bdf8, #10b981);
+      border-radius: 999px;
+      transition: width 0.35s ease, background 0.35s ease;
+    }
+
+    .progress-fill.rest-mode {
+      background: linear-gradient(90deg, #9333ea, #c084fc);
+    }
+
     .visual-grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr;
+      grid-template-columns: 1.55fr 1fr;
       gap: 10px;
       margin-bottom: 10px;
     }
 
-    @media (max-width: 520px) {
+    @media (max-width: 540px) {
       .visual-grid {
         grid-template-columns: 1fr;
       }
@@ -247,12 +304,12 @@
       background: radial-gradient(circle at top, #172238 0%, #0b1220 100%);
       border: 1px solid var(--border);
       border-radius: 18px;
-      padding: 10px;
+      padding: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      min-height: 196px;
+      min-height: 226px;
     }
 
     .panel-header {
@@ -266,51 +323,19 @@
       margin-bottom: 4px;
     }
 
-    /* Animaciones anatómicas exactas del corte sagital */
     .diaphragm-dome, .pelvic-band, .prostate-gland, .corpus-base {
-      transition: transform 0.5s ease, stroke 0.35s ease, fill 0.35s ease;
-      transform-origin: center;
+      transition: stroke 0.35s ease, fill 0.35s ease;
     }
 
-    .diaphragm-dome.contracted {
-      transform: translateY(-6px);
-      stroke: #38bdf8;
-    }
-
-    .diaphragm-dome.relaxed {
-      transform: translateY(6px);
-      stroke: #10b981;
-    }
-
-    .pelvic-band.contracted {
-      transform: translateY(-9px);
-      stroke: #f59e0b;
-      fill: rgba(245, 158, 11, 0.25);
-    }
-
-    .pelvic-band.relaxed {
-      transform: translateY(4px);
-      stroke: #10b981;
-      fill: rgba(16, 185, 129, 0.18);
-    }
-
-    .prostate-gland.contracted {
-      transform: translateY(-5px);
-    }
-
-    .prostate-gland.relaxed {
-      transform: translateY(2px);
-    }
-
-    .corpus-base.contracted {
-      fill: rgba(244, 63, 94, 0.26);
-      stroke: #fb7185;
+    .dir-arrow {
+      transition: opacity 0.25s ease;
+      pointer-events: none;
     }
 
     .breath-wrap {
       position: relative;
-      width: 106px;
-      height: 106px;
+      width: 112px;
+      height: 112px;
       display: grid;
       place-items: center;
       margin: 6px 0;
@@ -318,29 +343,29 @@
 
     .breath-ring-outer {
       position: absolute;
-      width: 102px;
-      height: 102px;
+      width: 108px;
+      height: 108px;
       border-radius: 50%;
       border: 1.5px dashed rgba(148, 163, 184, 0.35);
     }
 
     .breath-ring-inner {
       position: absolute;
-      width: 78px;
-      height: 78px;
+      width: 82px;
+      height: 82px;
       border-radius: 50%;
       border: 1px solid rgba(56, 189, 248, 0.25);
     }
 
     .breath-bubble {
-      width: 64px;
-      height: 64px;
+      width: 66px;
+      height: 66px;
       border-radius: 50%;
       background: rgba(56, 189, 248, 0.14);
       border: 2px solid #38bdf8;
       display: grid;
       place-items: center;
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 800;
       color: #e0f2fe;
       transition: transform 0.55s ease, background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
@@ -354,10 +379,24 @@
     }
 
     .breath-bubble.inhale {
-      transform: scale(1.25);
-      background: rgba(16, 185, 129, 0.2);
+      transform: scale(1.26);
+      background: rgba(16, 185, 129, 0.22);
       border-color: #10b981;
       color: #a7f3d0;
+    }
+
+    .breath-bubble.neutral-state {
+      transform: scale(0.92);
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #bae6fd;
+    }
+
+    .breath-bubble.resting {
+      transform: scale(1.04);
+      background: rgba(168, 85, 247, 0.2);
+      border-color: #c084fc;
+      color: #f3e8ff;
     }
 
     .breath-caption {
@@ -416,6 +455,10 @@
       font-variant-numeric: tabular-nums;
     }
 
+    .timer-val.rest-text {
+      color: #d8b4fe;
+    }
+
     .cue-msg {
       margin: 0 0 6px;
       font-size: 14.5px;
@@ -433,10 +476,12 @@
     .actions-row {
       display: flex;
       gap: 9px;
+      flex-wrap: wrap;
     }
 
     .btn-primary {
       flex: 1;
+      min-width: 120px;
       background: linear-gradient(135deg, #0284c7, #0ea5e9);
       color: #fff;
       border: none;
@@ -445,6 +490,22 @@
       font-size: 15px;
       font-weight: 700;
       cursor: pointer;
+    }
+
+    .btn-skip {
+      background: rgba(168, 85, 247, 0.22);
+      color: #f3e8ff;
+      border: 1px solid rgba(168, 85, 247, 0.55);
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: none;
+    }
+
+    .btn-skip.visible {
+      display: inline-block;
     }
 
     .btn-ghost {
@@ -456,6 +517,21 @@
       font-size: 13.5px;
       font-weight: 600;
       cursor: pointer;
+    }
+
+    .session-plan-box {
+      background: rgba(56, 189, 248, 0.08);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 13px;
+      padding: 9px 12px;
+      font-size: 12px;
+      color: #cbd5e1;
+      margin-top: 12px;
+      line-height: 1.45;
+    }
+
+    .session-plan-box strong {
+      color: #7dd3fc;
     }
 
     .sec-title {
@@ -682,8 +758,18 @@
           <div id="repBadge" class="rep-pill">Repetición 1 / 8</div>
         </div>
 
+        <div class="routine-progress-wrap">
+          <div class="routine-progress-header">
+            <span id="progressStepText">Bloque 1/3 · Fuerza lenta (0 de 8 completadas)</span>
+            <span id="progressPctText">0%</span>
+          </div>
+          <div class="progress-track">
+            <div id="progressFill" class="progress-fill"></div>
+          </div>
+        </div>
+
         <div class="visual-grid">
-          <!-- CORTE SAGITAL (Estilo exacto de referencia con diafragma en cúpula discontinua y etiquetas limpias) -->
+          <!-- CORTE SAGITAL -->
           <div class="panel-box">
             <div class="panel-header">Corte Sagital · Diafragma y Suelo Pélvico</div>
             <svg width="100%" height="184" viewBox="0 0 320 184" aria-label="Corte sagital diafragma y suelo pélvico">
@@ -691,6 +777,7 @@
               <text x="160" y="14" text-anchor="middle" fill="#cbd5e1" font-size="10.5" font-weight="700">Diafragma (espejo respiratorio)</text>
               <!-- Cúpula discontinua del Diafragma -->
               <path id="diaphragmLine" class="diaphragm-dome" d="M68 34 Q160 19 252 34" fill="none" stroke="#7dd3fc" stroke-width="3.2" stroke-linecap="round" stroke-dasharray="7 5" />
+              <text id="diaphragmArrow" class="dir-arrow" x="160" y="21" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="800" opacity="0">↑</text>
 
               <!-- Etiqueta Sacro / Coxis -->
               <text x="255" y="48" text-anchor="middle" fill="#cbd5e1" font-size="10" font-weight="600">Sacro / Coxis</text>
@@ -718,9 +805,10 @@
 
               <!-- Hamaca muscular del Suelo Pélvico (PC / BC / IC) -->
               <path id="pelvicLine" class="pelvic-band" d="M82 115 Q154 142 238 134 L236 140 Q154 152 82 123 Z" fill="rgba(56,189,248,0.18)" stroke="#7dd3fc" stroke-width="2.2" stroke-linejoin="round" />
+              <text id="pelvicArrow" class="dir-arrow" x="156" y="138" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="800" opacity="0">↑</text>
 
               <!-- Etiquetas inferiores separadas con margen claro -->
-              <text x="64" y="173" text-anchor="middle" fill="#f87171" font-size="9.5" font-weight="700">Flujo y retención ↑</text>
+              <text id="flowLabel" x="64" y="173" text-anchor="middle" fill="#f87171" font-size="9.5" font-weight="700">Flujo y retención ↑</text>
               <text x="192" y="173" text-anchor="middle" fill="#f8fafc" font-size="10" font-weight="700">Suelo Pélvico (PC / BC / IC)</text>
             </svg>
           </div>
@@ -751,22 +839,28 @@
         <div class="timer-center">
           <div id="timerVal" class="timer-val">03</div>
           <p id="cueMsg" class="cue-msg">Presiona Iniciar para comenzar la guía</p>
-          <p id="subMsg" class="sub-msg">Principiante · Acostado · 5–6 días/semana</p>
+          <p id="subMsg" class="sub-msg">Principiante · Acostado · Secuencia automática de 3 bloques</p>
         </div>
 
         <div class="actions-row">
           <button id="btnStart" class="btn-primary">Iniciar</button>
+          <button id="btnSkipRest" class="btn-skip">Saltar descanso ⏭</button>
           <button id="btnAudio" class="btn-ghost">🔊 On</button>
           <button id="btnReset" class="btn-ghost">Reiniciar</button>
+        </div>
+
+        <div class="session-plan-box">
+          <strong>⏱️ Ajuste automático por postura y descanso:</strong> Al cambiar entre <strong>Acostado</strong>, <strong>Sentado</strong> y <strong>De pie</strong> se ajustan las repeticiones según la carga de gravedad, y entre bloques arranca un <strong>descanso guiado de 45s</strong>.
         </div>
       </div>
 
       <div class="card">
-        <h2 class="sec-title">Cómo ejecutarlo sin equivocarte</h2>
+        <h2 class="sec-title">Cómo ejecutarlo, posturas y descanso</h2>
         <ol class="guide-list">
-          <li><strong>Postura progresiva:</strong> empieza <strong>Acostado</strong> (sin gravedad), pasa a <strong>Sentado</strong> sobre los huesos de los glúteos y luego <strong>De pie</strong> con rodillas ligeramente sueltas.</li>
-          <li><strong>Respiración:</strong> inhala suave cuando el círculo crece (el músculo descansa) y <strong>exhala lento</strong> cuando el círculo se recoge (elevando el suelo pélvico hacia adentro sin pujar).</li>
-          <li><strong>Frecuencia:</strong> hazlo <strong>5 a 6 días a la semana</strong> (3–6 min/día) y deja 1–2 días de descanso.</li>
+          <li><strong>Acostado (Carga baja):</strong> boca arriba, rodillas flexionadas y pies apoyados. Sin gravedad para lograr el máximo número de repeticiones con precisión.</li>
+          <li><strong>Sentado (Carga media):</strong> espalda recta sobre los huesos de los glúteos, pies planos y nalgas relajadas.</li>
+          <li><strong>De pie (Carga alta):</strong> mayor exigencia contra la gravedad; la app reduce automáticamente las repeticiones para evitar fatiga muscular.</li>
+          <li><strong>Kegel inverso (Bloque 3):</strong> inhala profundo hacia el abdomen bajo para expandir y relajar el suelo pélvico (`↓`), y exhala suave para volver a posición neutra.</li>
         </ol>
       </div>
     </section>
@@ -871,46 +965,196 @@
 
   <script>
     const LEVELS = [
-      { id: 'beg', name: 'Principiante', c: 3, r: 5, reps: 8 },
-      { id: 'int', name: 'Intermedio', c: 5, r: 5, reps: 10 },
-      { id: 'adv', name: 'Avanzado', c: 8, r: 4, reps: 12 }
+      { id: 'beg', name: 'Principiante', c: 3, r: 5, slowReps: 8, quickReps: 10, revReps: 6 },
+      { id: 'int', name: 'Intermedio', c: 5, r: 5, slowReps: 10, quickReps: 12, revReps: 8 },
+      { id: 'adv', name: 'Avanzado', c: 8, r: 4, slowReps: 12, quickReps: 16, revReps: 10 }
     ];
 
     const POSTURES = [
-      { id: 'lying', name: 'Acostado', sub: 'Sin gravedad', tip: '🛏️ Acostado: Boca arriba, rodillas flexionadas y pies apoyados. Ideal para aislar sin compensar.' },
-      { id: 'sitting', name: 'Sentado', sub: 'Huesos glúteos', tip: '🪑 Sentado: Espalda recta sobre los huesos de los glúteos, pies planos y glúteos relajados.' },
-      { id: 'standing', name: 'De pie', sub: 'Mayor reto', tip: '🧍 De pie: Pies al ancho de hombros, rodillas ligeramente sueltas y glúteos libres.' }
+      {
+        id: 'lying',
+        name: 'Acostado',
+        sub: 'Sin gravedad',
+        repDelta: 0,
+        tip: '🛏️ Acostado (Carga baja): Boca arriba, rodillas flexionadas y pies apoyados. Sin gravedad para aislar el músculo y completar todas las repeticiones.'
+      },
+      {
+        id: 'sitting',
+        name: 'Sentado',
+        sub: 'Carga media',
+        repDelta: 0,
+        tip: '🪑 Sentado (Carga media): Espalda recta sobre los huesos de los glúteos, pies planos en el suelo y glúteos relajados.'
+      },
+      {
+        id: 'standing',
+        name: 'De pie',
+        sub: 'Carga alta',
+        repDelta: -2,
+        tip: '🧍 De pie (Carga alta): Pies al ancho de hombros y rodillas ligeramente sueltas. Al trabajar contra la gravedad, se reducen 2 repeticiones para evitar fatiga.'
+      }
     ];
 
     const ROUTINES = [
-      { id: 'slow', name: 'Fuerza lenta', reps: 8,
+      {
+        id: 'slow',
+        name: '1. Fuerza lenta',
         cCue: 'Exhala suave y eleva el suelo pélvico hacia adentro',
-        rCue: 'Inhala suave y suelta por completo el suelo pélvico' },
-      { id: 'quick', name: 'Rápidos (Flujo)', reps: 10, cFixed: 1, rFixed: 2,
+        rCue: 'Inhala suave y suelta por completo el suelo pélvico'
+      },
+      {
+        id: 'quick',
+        name: '2. Rápidos (Flujo)',
+        cFixed: 1,
+        rFixed: 2,
         cCue: 'Contracción rápida y firme hacia arriba',
-        rCue: 'Relaja por completo y respira fluido' },
-      { id: 'reverse', name: 'Kegel inverso', reps: 6, cFixed: 3, rFixed: 4,
-        cCue: 'Inhala hacia el abdomen bajo y relaja/expande la pelvis',
-        rCue: 'Exhala suave manteniendo la zona pélvica libre' }
+        rCue: 'Relaja por completo y respira fluido'
+      },
+      {
+        id: 'reverse',
+        name: '3. Kegel inverso',
+        cFixed: 4,
+        rFixed: 4,
+        cCue: 'Inhala profundo hacia el abdomen bajo y expande/relaja la pelvis',
+        rCue: 'Exhala suave y regresa la pelvis a posición neutra sin tensión'
+      }
     ];
 
-    const KEY = 'core_app_v5_stats';
+    const REST_DURATION = 45;
+    const KEY = 'core_app_v7_stats';
     let stats = (() => {
       try { return JSON.parse(localStorage.getItem(KEY)) || { streak: 0, sessions: 0, minutes: 0, lastDate: null }; }
       catch (e) { return { streak: 0, sessions: 0, minutes: 0, lastDate: null }; }
     })();
 
     let lIdx = 0, pIdx = 0, rIdx = 0;
-    let rep = 1, phase = 'contract', secLeft = 3, timer = null, audioOn = true, ctx = null;
+    let rep = 1;
+    let phase = 'contract'; // 'contract' | 'relax' | 'rest'
+    let secLeft = 3;
+    let timer = null;
+    let audioOn = true;
+    let ctx = null;
+
+    // Estados geométricos SVG para interpolación continua en los 3 bloques
+    const SVG_POSES = {
+      neutral: {
+        diaphragm: [68, 34, 160, 19, 252, 34],
+        pelvic: [82, 115, 154, 142, 238, 134, 236, 140, 154, 152, 82, 123],
+        prostateCy: 106,
+        dArrowY: 21,
+        pArrowY: 138
+      },
+      contract: {
+        diaphragm: [68, 28, 160, 10, 252, 28],
+        pelvic: [82, 110, 154, 122, 238, 126, 236, 132, 154, 130, 82, 118],
+        prostateCy: 98,
+        dArrowY: 14,
+        pArrowY: 121
+      },
+      relax: {
+        diaphragm: [68, 39, 160, 29, 252, 39],
+        pelvic: [82, 118, 154, 148, 238, 137, 236, 143, 154, 158, 82, 126],
+        prostateCy: 109,
+        dArrowY: 32,
+        pArrowY: 151
+      },
+      deepExpand: {
+        diaphragm: [68, 43, 160, 35, 252, 43],
+        pelvic: [82, 121, 154, 154, 238, 139, 236, 145, 154, 164, 82, 129],
+        prostateCy: 112,
+        dArrowY: 37,
+        pArrowY: 157
+      }
+    };
+
+    let currentPose = JSON.parse(JSON.stringify(SVG_POSES.neutral));
+    let animStartTime = null;
+    let startPoseSnapshot = null;
+    let animFrameId = null;
+
+    function lerp(a, b, t) {
+      return a + (b - a) * t;
+    }
+
+    function applyPoseToSVG(pose) {
+      const d = pose.diaphragm;
+      const p = pose.pelvic;
+      const dLine = document.getElementById('diaphragmLine');
+      const pLine = document.getElementById('pelvicLine');
+      const pGland = document.getElementById('prostateGland');
+      const dArrow = document.getElementById('diaphragmArrow');
+      const pArrow = document.getElementById('pelvicArrow');
+
+      if (dLine) {
+        dLine.setAttribute('d', `M${d[0].toFixed(1)} ${d[1].toFixed(1)} Q${d[2].toFixed(1)} ${d[3].toFixed(1)} ${d[4].toFixed(1)} ${d[5].toFixed(1)}`);
+      }
+      if (pLine) {
+        pLine.setAttribute('d', `M${p[0].toFixed(1)} ${p[1].toFixed(1)} Q${p[2].toFixed(1)} ${p[3].toFixed(1)} ${p[4].toFixed(1)} ${p[5].toFixed(1)} L${p[6].toFixed(1)} ${p[7].toFixed(1)} Q${p[8].toFixed(1)} ${p[9].toFixed(1)} ${p[10].toFixed(1)} ${p[11].toFixed(1)} Z`);
+      }
+      if (pGland) {
+        pGland.setAttribute('cy', pose.prostateCy.toFixed(1));
+      }
+      if (dArrow) {
+        dArrow.setAttribute('y', pose.dArrowY.toFixed(1));
+      }
+      if (pArrow) {
+        pArrow.setAttribute('y', pose.pArrowY.toFixed(1));
+      }
+    }
+
+    function animateSagittalTo(nextKey) {
+      startPoseSnapshot = JSON.parse(JSON.stringify(currentPose));
+      animStartTime = performance.now();
+
+      if (animFrameId) {
+        cancelAnimationFrame(animFrameId);
+      }
+
+      const duration = 420;
+      const target = SVG_POSES[nextKey];
+
+      function step(now) {
+        const rawT = Math.min(1, (now - animStartTime) / duration);
+        const t = 1 - Math.pow(1 - rawT, 3);
+
+        for (let i = 0; i < target.diaphragm.length; i++) {
+          currentPose.diaphragm[i] = lerp(startPoseSnapshot.diaphragm[i], target.diaphragm[i], t);
+        }
+        for (let i = 0; i < target.pelvic.length; i++) {
+          currentPose.pelvic[i] = lerp(startPoseSnapshot.pelvic[i], target.pelvic[i], t);
+        }
+        currentPose.prostateCy = lerp(startPoseSnapshot.prostateCy, target.prostateCy, t);
+        currentPose.dArrowY = lerp(startPoseSnapshot.dArrowY, target.dArrowY, t);
+        currentPose.pArrowY = lerp(startPoseSnapshot.pArrowY, target.pArrowY, t);
+
+        applyPoseToSVG(currentPose);
+
+        if (rawT < 1) {
+          animFrameId = requestAnimationFrame(step);
+        } else {
+          animFrameId = null;
+        }
+      }
+
+      animFrameId = requestAnimationFrame(step);
+    }
+
+    function getRepsForRoutine(levelObj, postureObj, routineId) {
+      let base = levelObj.slowReps;
+      if (routineId === 'quick') base = levelObj.quickReps;
+      if (routineId === 'reverse') base = levelObj.revReps;
+      return Math.max(4, base + postureObj.repDelta);
+    }
 
     function cfg() {
       const L = LEVELS[lIdx];
+      const P = POSTURES[pIdx];
       const R = ROUTINES[rIdx];
       return {
         id: R.id,
+        name: R.name,
         cSec: R.cFixed || L.c,
         rSec: R.rFixed || L.r,
-        reps: R.reps || L.reps,
+        reps: getRepsForRoutine(L, P, R.id),
         cCue: R.cCue,
         rCue: R.rCue
       };
@@ -943,7 +1187,7 @@
       document.getElementById('statMinutes').textContent = stats.minutes;
     }
 
-    function logSession(mins = 3) {
+    function logSession(mins = 5) {
       const d = new Date();
       const today = `${d.getFullYear()}-${d.getMonth()+1}-${d.getDate()}`;
       const y = new Date(Date.now() - 86400000);
@@ -956,8 +1200,9 @@
       stats.minutes += mins;
       saveStats();
       const t = document.getElementById('toast');
+      t.textContent = '¡Sesión completa registrada!';
       t.classList.add('show');
-      setTimeout(() => t.classList.remove('show'), 2400);
+      setTimeout(() => t.classList.remove('show'), 2600);
     }
 
     function renderSelectors() {
@@ -977,7 +1222,12 @@
         const b = document.createElement('button');
         b.className = 'opt-btn' + (i === pIdx ? ' active-posture' : '');
         b.innerHTML = `<span class="opt-title">${P.name}</span><span class="opt-sub">${P.sub}</span>`;
-        b.onclick = () => { pIdx = i; renderSelectors(); renderUI(Boolean(timer)); };
+        b.onclick = () => {
+          stop();
+          pIdx = i;
+          reset();
+          renderSelectors();
+        };
         pGrid.appendChild(b);
       });
 
@@ -988,7 +1238,8 @@
         b.className = 'opt-btn' + (i === rIdx ? ' active-routine' : '');
         const cD = R.cFixed || LEVELS[lIdx].c;
         const rD = R.rFixed || LEVELS[lIdx].r;
-        b.innerHTML = `<span class="opt-title">${R.name}</span><span class="opt-sub">${cD}s / ${rD}s · ${R.reps}x</span>`;
+        const dynamicReps = getRepsForRoutine(LEVELS[lIdx], POSTURES[pIdx], R.id);
+        b.innerHTML = `<span class="opt-title">${R.name}</span><span class="opt-sub">${cD}s / ${rD}s · ${dynamicReps}x</span>`;
         b.onclick = () => { stop(); rIdx = i; reset(); renderSelectors(); };
         rGrid.appendChild(b);
       });
@@ -1008,29 +1259,107 @@
       renderUI(false);
     }
 
+    function advanceAfterRest() {
+      if (rIdx < ROUTINES.length - 1) {
+        rIdx += 1;
+        rep = 1;
+        phase = 'contract';
+        secLeft = cfg().cSec;
+        renderSelectors();
+        beep(660, 0.16);
+        renderUI(Boolean(timer));
+      } else {
+        stop();
+        rIdx = 0;
+        renderSelectors();
+        reset();
+      }
+    }
+
     function renderUI(running) {
       const c = cfg();
-      document.getElementById('timerVal').textContent = String(secLeft).padStart(2, '0');
-      document.getElementById('repBadge').textContent = `Repetición ${rep} / ${c.reps}`;
-      document.getElementById('subMsg').textContent = `${LEVELS[lIdx].name} · ${POSTURES[pIdx].name} · 5–6 días/semana`;
-      document.getElementById('btnStart').textContent = running ? 'Pausar' : 'Iniciar';
-
+      const timerValEl = document.getElementById('timerVal');
       const badge = document.getElementById('phaseBadge');
+      const repBadge = document.getElementById('repBadge');
       const pLine = document.getElementById('pelvicLine');
       const dLine = document.getElementById('diaphragmLine');
-      const pGland = document.getElementById('prostateGland');
       const cBase = document.getElementById('corpusBase');
+      const dArrow = document.getElementById('diaphragmArrow');
+      const pArrow = document.getElementById('pelvicArrow');
       const bubble = document.getElementById('breathBubble');
       const bTitle = document.getElementById('breathTitle');
       const bSub = document.getElementById('breathSub');
       const airBox = document.getElementById('airBox');
+      const progressFill = document.getElementById('progressFill');
+      const progressStepText = document.getElementById('progressStepText');
+      const progressPctText = document.getElementById('progressPctText');
+      const btnSkipRest = document.getElementById('btnSkipRest');
+
+      timerValEl.textContent = String(secLeft).padStart(2, '0');
+      timerValEl.className = 'timer-val' + (phase === 'rest' ? ' rest-text' : '');
+      document.getElementById('btnStart').textContent = running ? 'Pausar' : 'Iniciar';
 
       badge.className = 'phase-badge';
-      pLine.className = 'pelvic-band';
-      dLine.className = 'diaphragm-dome';
-      pGland.className = 'prostate-gland';
-      cBase.className = 'corpus-base';
       bubble.className = 'breath-bubble';
+      progressFill.className = 'progress-fill';
+
+      // Modo descanso automático entre bloques (45s)
+      if (phase === 'rest') {
+        const nextRoutine = ROUTINES[rIdx + 1];
+        const restPct = Math.min(100, Math.max(0, Math.round(((REST_DURATION - secLeft) / REST_DURATION) * 100)));
+
+        badge.textContent = `DESCANSO ENTRE BLOQUES · ${secLeft}s`;
+        badge.classList.add('rest');
+        repBadge.textContent = `Siguiente: Bloque ${rIdx + 2}/3`;
+        progressFill.classList.add('rest-mode');
+        progressFill.style.width = `${restPct}%`;
+        progressPctText.textContent = `${secLeft}s`;
+        progressStepText.textContent = `Descanso activo antes de ${nextRoutine ? nextRoutine.name : 'finalizar'}`;
+
+        btnSkipRest.classList.add('visible');
+
+        bubble.classList.add('resting');
+        bubble.textContent = 'DESCANSA';
+        bTitle.textContent = 'Recupera tu respiración';
+        bSub.textContent = 'Respira suave y natural sin tensar la pelvis.';
+        airBox.textContent = '🌬️ Aire: Natural';
+
+        document.getElementById('cueMsg').textContent = `Descansa ${secLeft}s · Prepárate para ${nextRoutine ? nextRoutine.name : 'terminar'}`;
+        document.getElementById('subMsg').textContent = `${LEVELS[lIdx].name} · ${POSTURES[pIdx].name} · Paso automático al siguiente bloque`;
+
+        dLine.setAttribute('stroke', '#7dd3fc');
+        pLine.setAttribute('stroke', '#c084fc');
+        pLine.setAttribute('fill', 'rgba(168,85,247,0.18)');
+        cBase.setAttribute('fill', 'rgba(56,189,248,0.12)');
+        cBase.setAttribute('stroke', '#475569');
+        dArrow.setAttribute('opacity', '0');
+        pArrow.setAttribute('opacity', '0');
+        animateSagittalTo('neutral');
+        return;
+      }
+
+      btnSkipRest.classList.remove('visible');
+      repBadge.textContent = `Repetición ${rep} / ${c.reps}`;
+
+      // Progreso continuo dentro del bloque actual
+      const totalCycleSec = c.reps * (c.cSec + c.rSec);
+      const completedPrevRepsSec = (rep - 1) * (c.cSec + c.rSec);
+      let currentRepElapsedSec = 0;
+      if (running || rep > 1 || phase === 'relax' || secLeft < c.cSec) {
+        if (phase === 'contract') {
+          currentRepElapsedSec = c.cSec - secLeft;
+        } else {
+          currentRepElapsedSec = c.cSec + (c.rSec - secLeft);
+        }
+      }
+      const pct = Math.min(100, Math.max(0, Math.round(((completedPrevRepsSec + currentRepElapsedSec) / totalCycleSec) * 100)));
+      const completedRepsCount = phase === 'relax' && secLeft === 1 ? rep : (rep - 1);
+
+      progressFill.style.width = `${pct}%`;
+      progressPctText.textContent = `${pct}%`;
+      progressStepText.textContent = `Bloque ${rIdx + 1}/3 · ${c.name.replace(/^\d+\.\s*/, '')} (${completedRepsCount} de ${c.reps} completadas)`;
+
+      document.getElementById('subMsg').textContent = `${LEVELS[lIdx].name} · ${POSTURES[pIdx].name} (${c.reps} repeticiones)`;
 
       if (!running && rep === 1 && phase === 'contract' && secLeft === c.cSec) {
         badge.textContent = 'Listo para iniciar';
@@ -1039,60 +1368,156 @@
         bTitle.textContent = 'Sincroniza tu aire';
         bSub.textContent = 'Se recoge al exhalar · Se expande al inhalar.';
         airBox.textContent = '🌬️ Aire: Fluido';
+
+        dLine.setAttribute('stroke', '#7dd3fc');
+        pLine.setAttribute('stroke', '#7dd3fc');
+        pLine.setAttribute('fill', 'rgba(56,189,248,0.18)');
+        cBase.setAttribute('fill', 'rgba(56,189,248,0.12)');
+        cBase.setAttribute('stroke', '#475569');
+        dArrow.setAttribute('opacity', '0');
+        pArrow.setAttribute('opacity', '0');
+        animateSagittalTo('neutral');
         return;
       }
 
       if (phase === 'contract') {
         if (c.id === 'reverse') {
-          badge.textContent = 'Expandir · Inhala suave';
+          // Fase 1 Kegel inverso: Expansión profunda y descenso diafragmático/pélvico
+          badge.textContent = 'EXPANDIR · INHALA PROFUNDO';
           badge.classList.add('relax');
-          pLine.classList.add('relaxed');
-          dLine.classList.add('relaxed');
-          pGland.classList.add('relaxed');
           bubble.classList.add('inhale');
           bubble.textContent = 'INHALA';
-          bTitle.textContent = 'Inhala y relaja';
-          bSub.textContent = 'El círculo se expande y la pelvis cede.';
+          bTitle.textContent = 'Inhala y expande';
+          bSub.textContent = 'El círculo crece; diafragma y pelvis descienden.';
           airBox.textContent = '🌬️ Aire: Inhalando';
+
+          dLine.setAttribute('stroke', '#10b981');
+          pLine.setAttribute('stroke', '#10b981');
+          pLine.setAttribute('fill', 'rgba(16,185,129,0.24)');
+          cBase.setAttribute('fill', 'rgba(56,189,248,0.12)');
+          cBase.setAttribute('stroke', '#475569');
+          dArrow.textContent = '↓';
+          dArrow.setAttribute('fill', '#10b981');
+          dArrow.setAttribute('opacity', '1');
+          pArrow.textContent = '↓';
+          pArrow.setAttribute('fill', '#10b981');
+          pArrow.setAttribute('opacity', '1');
+          animateSagittalTo('deepExpand');
         } else {
-          badge.textContent = 'Contraer · Exhala suave';
+          // Fase 1 Fuerza lenta / Rápidos: Contracción y elevación
+          badge.textContent = 'CONTRAER · EXHALA SUAVE';
           badge.classList.add('contract');
-          pLine.classList.add('contracted');
-          dLine.classList.add('contracted');
-          pGland.classList.add('contracted');
-          cBase.classList.add('contracted');
           bubble.classList.add('exhale');
           bubble.textContent = 'EXHALA';
           bTitle.textContent = 'Exhala y eleva';
           bSub.textContent = 'El círculo se recoge y el músculo sube.';
           airBox.textContent = '🌬️ Aire: Exhalando';
+
+          dLine.setAttribute('stroke', '#38bdf8');
+          pLine.setAttribute('stroke', '#f59e0b');
+          pLine.setAttribute('fill', 'rgba(245,158,11,0.28)');
+          cBase.setAttribute('fill', 'rgba(244,63,94,0.28)');
+          cBase.setAttribute('stroke', '#fb7185');
+          dArrow.textContent = '↑';
+          dArrow.setAttribute('fill', '#38bdf8');
+          dArrow.setAttribute('opacity', '1');
+          pArrow.textContent = '↑';
+          pArrow.setAttribute('fill', '#fbbf24');
+          pArrow.setAttribute('opacity', '1');
+          animateSagittalTo('contract');
         }
         document.getElementById('cueMsg').textContent = c.cCue;
       } else {
-        badge.textContent = 'Relajar · Inhala suave';
-        badge.classList.add('relax');
-        pLine.classList.add('relaxed');
-        dLine.classList.add('relaxed');
-        pGland.classList.add('relaxed');
-        bubble.classList.add('inhale');
-        bubble.textContent = 'INHALA';
-        bTitle.textContent = 'Inhala y suelta';
-        bSub.textContent = 'Suelta por completo entre repeticiones.';
-        airBox.textContent = '🌬️ Aire: Inhalando';
+        if (c.id === 'reverse') {
+          // Fase 2 Kegel inverso: Exhala suave y vuelve a posición neutra (movimiento visible en cada repetición)
+          badge.textContent = 'SOLTAR NEUTRO · EXHALA SUAVE';
+          badge.classList.add('neutral-phase');
+          bubble.classList.add('neutral-state');
+          bubble.textContent = 'NEUTRO';
+          bTitle.textContent = 'Exhala y vuelve a neutro';
+          bSub.textContent = 'El círculo se recoge al centro sin apretar.';
+          airBox.textContent = '🌬️ Aire: Exhalando';
+
+          dLine.setAttribute('stroke', '#7dd3fc');
+          pLine.setAttribute('stroke', '#38bdf8');
+          pLine.setAttribute('fill', 'rgba(56,189,248,0.18)');
+          cBase.setAttribute('fill', 'rgba(56,189,248,0.12)');
+          cBase.setAttribute('stroke', '#475569');
+          dArrow.textContent = '↑';
+          dArrow.setAttribute('fill', '#7dd3fc');
+          dArrow.setAttribute('opacity', '1');
+          pArrow.textContent = '↑';
+          pArrow.setAttribute('fill', '#38bdf8');
+          pArrow.setAttribute('opacity', '1');
+          animateSagittalTo('neutral');
+        } else {
+          // Fase 2 Fuerza lenta / Rápidos: Inhala y relaja
+          badge.textContent = 'RELAJAR · INHALA SUAVE';
+          badge.classList.add('relax');
+          bubble.classList.add('inhale');
+          bubble.textContent = 'INHALA';
+          bTitle.textContent = 'Inhala y suelta';
+          bSub.textContent = 'Suelta por completo entre repeticiones.';
+          airBox.textContent = '🌬️ Aire: Inhalando';
+
+          dLine.setAttribute('stroke', '#10b981');
+          pLine.setAttribute('stroke', '#10b981');
+          pLine.setAttribute('fill', 'rgba(16,185,129,0.2)');
+          cBase.setAttribute('fill', 'rgba(56,189,248,0.12)');
+          cBase.setAttribute('stroke', '#475569');
+          dArrow.textContent = '↓';
+          dArrow.setAttribute('fill', '#10b981');
+          dArrow.setAttribute('opacity', '1');
+          pArrow.textContent = '↓';
+          pArrow.setAttribute('fill', '#10b981');
+          pArrow.setAttribute('opacity', '1');
+          animateSagittalTo('relax');
+        }
         document.getElementById('cueMsg').textContent = c.rCue;
       }
     }
 
     function tick() {
       const c = cfg();
-      if (secLeft > 1) { secLeft -= 1; renderUI(true); return; }
+      if (secLeft > 1) {
+        secLeft -= 1;
+        renderUI(true);
+        return;
+      }
+
+      if (phase === 'rest') {
+        advanceAfterRest();
+        return;
+      }
+
       if (phase === 'contract') {
-        phase = 'relax'; secLeft = c.rSec; beep(390, 0.14); renderUI(true);
+        phase = 'relax';
+        secLeft = c.rSec;
+        beep(390, 0.14);
+        renderUI(true);
       } else if (rep < c.reps) {
-        rep += 1; phase = 'contract'; secLeft = c.cSec; beep(620, 0.14); renderUI(true);
+        rep += 1;
+        phase = 'contract';
+        secLeft = c.cSec;
+        beep(620, 0.14);
+        renderUI(true);
       } else {
-        stop(); beep(780, 0.22); logSession(3); reset();
-        document.getElementById('cueMsg').textContent = '¡Rutina completada!';
+        if (rIdx < ROUTINES.length - 1) {
+          phase = 'rest';
+          secLeft = REST_DURATION;
+          beep(520, 0.18);
+          renderUI(true);
+        } else {
+          stop();
+          beep(780, 0.24);
+          logSession(5);
+          document.getElementById('progressFill').style.width = '100%';
+          document.getElementById('progressPctText').textContent = '100%';
+          document.getElementById('progressStepText').textContent = '¡Sesión diaria completa (3 de 3 bloques)!';
+          document.getElementById('phaseBadge').textContent = 'SESIÓN COMPLETA · EXCELENTE';
+          document.getElementById('phaseBadge').classList.add('relax');
+          document.getElementById('cueMsg').textContent = '¡Completaste los 3 bloques del día! Nos vemos mañana.';
+        }
       }
     }
 
@@ -1100,11 +1525,25 @@
       if (timer) stop();
       else { beep(620, 0.12); renderUI(true); timer = setInterval(tick, 1000); }
     };
-    document.getElementById('btnReset').onclick = () => { stop(); reset(); };
+
+    document.getElementById('btnSkipRest').onclick = () => {
+      if (phase === 'rest') {
+        advanceAfterRest();
+      }
+    };
+
+    document.getElementById('btnReset').onclick = () => {
+      stop();
+      rIdx = 0;
+      renderSelectors();
+      reset();
+    };
+
     document.getElementById('btnAudio').onclick = (e) => {
       audioOn = !audioOn; e.target.textContent = audioOn ? '🔊 On' : '🔇 Off';
     };
-    document.getElementById('btnManual').onclick = () => logSession(3);
+
+    document.getElementById('btnManual').onclick = () => logSession(5);
 
     document.querySelectorAll('.tab-btn').forEach(btn => {
       btn.onclick = () => {
